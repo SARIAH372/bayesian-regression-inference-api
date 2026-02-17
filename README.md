@@ -1,101 +1,102 @@
-Bayesian Regression Inference API
+# Bayesian Regression Inference API
 
-Production-ready Bayesian linear regression service exposing posterior predictive uncertainty, coefficient credible intervals, posterior predictive checks (PPC), and effect curves.
+A production-ready Bayesian linear regression service exposing posterior predictive uncertainty, coefficient credible intervals, posterior predictive checks (PPC), and effect curves.
 
-Deployed with FastAPI and Docker on Railway using artifact-based model loading.
+Built with FastAPI, deployed via Docker on Railway, and structured around artifact-based inference.
 
-Overview
+---
+
+## Overview
 
 This project implements a conjugate Bayesian linear regression model using a Normal–Inverse-Gamma posterior. The service provides:
 
-Posterior predictive mean and credible intervals
+- Posterior predictive mean and 95% credible intervals
+- Posterior coefficient summaries with uncertainty
+- Posterior predictive checks (Bayesian p-values)
+- Feature sensitivity analysis via predictive curves
+- Artifact-based inference-only deployment
 
-Posterior coefficient summaries with uncertainty
+The model is trained offline and deployed as a lightweight inference API.
 
-Posterior predictive checks (PPC diagnostics)
+---
 
-Predictive effect curves for sensitivity analysis
+## Model Details
 
-Artifact-based inference deployment
+- Model: Conjugate Bayesian Linear Regression
+- Prior: Normal–Inverse-Gamma
+- Posterior predictive distribution: Student-t
+- Default credible interval: 95%
+- Inference method: Closed-form (no MCMC)
+- Deployment: FastAPI + Docker + Railway
 
-The model is trained offline and deployed as an inference-only API.
+---
 
-Model Details
+## Live Deployment
 
-Model: Conjugate Bayesian Linear Regression
+Interactive API documentation:
+https://bayesian-regression-inference-api-production.up.railway.app/docs
 
-Prior: Normal–Inverse-Gamma
+Health check:
+https://bayesian-regression-inference-api-production.up.railway.app/health
 
-Posterior predictive distribution: Student-t
+---
 
-Interval default: 95% posterior predictive interval
+## API Endpoints
 
-Inference: Closed-form (no MCMC)
-
-Deployment: FastAPI + Docker + Railway
-
-Endpoints
-Health
-
-GET /health
+### Health
+`GET /health`  
 Returns service status and model version.
 
-Features
-
-GET /features
+### Features
+`GET /features`  
 Returns ordered feature names and expected input dimension.
 
-Predict
-
-POST /predict
+### Predict
+`POST /predict`  
 Returns:
+- Posterior predictive mean
+- Credible interval
+- Degrees of freedom
+- Predictive scale
 
-Posterior predictive mean
+Example:
 
-Credible interval
-
-Degrees of freedom
-
-Predictive scale
-
+```json
+{
+  "x": [4.0, 7.5, 3.0, 45.0, 180.0, 0.9, 3.4, 0.2, 20.0, 0.3, -0.2, 0.1],
+  "level": 0.95,
+  "n_samples": 0
+}
 Posterior Coefficients
 
 GET /posterior/coefficients
-Returns:
 
-Posterior mean
+Returns posterior mean, standard deviation, and credible interval for each coefficient.
 
-Standard deviation
-
-Credible interval per coefficient
-
-Posterior Predictive Check
+Posterior Predictive Check (PPC)
 
 POST /ppc
-Returns:
 
-Bayesian p-values (mean & variance)
-
-Residual metrics (MAE, RMSE)
+Returns Bayesian p-values (mean and variance) and residual metrics (MAE, RMSE).
 
 Predictive Curve
 
 POST /posterior/predictive_curve
-Generates effect curves for individual features.
+
+Generates feature sensitivity curves with uncertainty bands.
 
 Architecture
-
-Training pipeline:
+Training Pipeline
 
 Synthetic dataset generation
 
-Z-score standardization
+Z-score feature standardization
 
-Conjugate posterior computation
+Closed-form posterior computation
 
 Artifact serialization
 
-Deployment pipeline:
+Deployment Pipeline
 
 Load trained posterior artifacts
 
@@ -103,41 +104,35 @@ Serve inference-only FastAPI endpoints
 
 Containerized via Docker
 
-Publicly deployed via Railway
+Publicly deployed on Railway
 
 Why This Project
 
 Most ML deployments expose only point predictions.
 
-This API exposes:
+This service exposes:
 
 Full predictive uncertainty
 
 Parameter uncertainty
 
-Model diagnostics
+Posterior diagnostics
 
 Sensitivity analysis
 
 It demonstrates a complete statistical modeling lifecycle:
 training → validation → artifact management → containerization → cloud deployment.
 
-Live Deployment
-
-Interactive docs:
-https://bayesian-regression-inference-api-production.up.railway.app/docs
-
-Health check:
-https://bayesian-regression-inference-api-production.up.railway.app/health
-
 Future Extensions
 
 Hierarchical Bayesian regression
 
-Robust regression (heavy-tailed noise)
+Robust heavy-tailed likelihoods
 
-Drift monitoring
+Drift detection and monitoring
 
 Conformal prediction overlay
 
-Probabilistic decision rules
+Decision-aware uncertainty thresholds
+
+
