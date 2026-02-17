@@ -1,0 +1,19 @@
+{
+  "summary": {
+    "n_train": 2000,
+    "n_test": 500,
+    "ppc_draws": 800,
+    "df_predictive": 2004.0,
+    "prior_strength": 1.0,
+    "a0": 2.0,
+    "b0": 2.0
+  },
+  "bayes_p_values": {
+    "mean": 0.68125,
+    "variance": 0.70375
+  },
+  "residuals": {
+    "mae": 5.185767621634065,
+    "rmse": 6.381686611272898
+  }
+}

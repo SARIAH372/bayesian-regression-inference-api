@@ -1,0 +1,27 @@
+{
+  "model_name": "Conjugate Bayesian Linear Regression (Normal\u2013Inverse-Gamma)",
+  "model_version": "bayes-linreg-v1.0.0",
+  "target": "performance_index",
+  "feature_names": [
+    "study_hours",
+    "sleep_hours",
+    "screen_time",
+    "exercise_mins",
+    "caffeine_mg",
+    "attendance_rate",
+    "prior_gpa",
+    "ses_index",
+    "commute_mins",
+    "social_support",
+    "stress",
+    "cognitive_load"
+  ],
+  "server_transforms": "z-score standardization using training mu/sd + intercept added server-side",
+  "posterior": "Closed-form posterior (no MCMC).",
+  "posterior_predictive": "Student-t with df=2*a_n; scale uses (b_n/a_n)*(1 + x'V_n x).",
+  "ppc": "Bayesian p-values for mean/variance computed via posterior predictive draws on holdout set.",
+  "notes": [
+    "Send RAW features in the exact order returned by GET /features.",
+    "If you retrain (new data), regenerate artifacts and redeploy."
+  ]
+}
